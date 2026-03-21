@@ -1,0 +1,56 @@
+DEPLOYMENT INSTRUCTIONS
+=======================
+
+LOCAL DEVELOPMENT
+-----------------
+1. Install dependencies:
+   npm install
+
+2. Start dev server:
+   npm run dev
+
+3. Open http://localhost:5173
+
+PRODUCTION BUILD
+----------------
+1. Build the app:
+   npm run build
+
+2. Output is in the dist/ folder
+
+3. Serve dist/ with any static file server:
+   npx serve dist
+   — or —
+   Upload dist/ contents to Netlify, Vercel, or any static host
+
+DOCKER DEPLOYMENT (OPTIONAL)
+-----------------------------
+Create a Dockerfile:
+
+  FROM node:18-alpine AS build
+  WORKDIR /app
+  COPY package*.json ./
+  RUN npm ci
+  COPY . .
+  RUN npm run build
+
+  FROM nginx:alpine
+  COPY --from=build /app/dist /usr/share/nginx/html
+  EXPOSE 80
+
+Build and run:
+  docker build -t knowledge-brain-frontend .
+  docker run -p 3000:80 knowledge-brain-frontend
+
+ENVIRONMENT
+-----------
+Set VITE_API_BASE_URL before building to point to your production backend:
+  VITE_API_BASE_URL=https://api.yoursite.com npm run build
+
+Note: Vite env vars are baked in at build time, not runtime.
+
+NOTES
+-----
+- Backend URL is embedded during build (not configurable at runtime)
+- Ensure backend CORS allows your frontend domain in production
+- The dist/ folder is fully static — no Node.js server needed
