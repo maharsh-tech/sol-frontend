@@ -1,4 +1,4 @@
-# Start Here — Knowledge Brain Frontend
+# Start Here — AskOrg AI Frontend
 
 ## Prerequisites
 - Node.js 18+

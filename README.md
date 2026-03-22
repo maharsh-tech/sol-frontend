@@ -1,6 +1,6 @@
-# Knowledge Brain — Frontend
+# AskOrg AI — Frontend
 
-React + Vite + Tailwind CSS v4 frontend for the Knowledge Brain RAG document Q&A system. Upload documents, ask questions, and get cited answers.
+React + Vite + Tailwind CSS frontend for AskOrg AI. Features two core modules: **Knowledge Brain** (RAG document Q&A) and **Meeting Intelligence** (Audio transcription & AI meeting analysis).
 
 ## Tech Stack
 - **Framework**: React 19 + Vite
@@ -17,11 +17,17 @@ npm run dev
 Requires the backend running at `http://localhost:8000` (configurable via `.env`).
 
 ## Features
+**Knowledge Brain:**
 - Drag & drop file upload (PDF, Excel, PowerPoint)
-- Natural language question input
-- Answer display with confidence badge (high/medium/low)
-- Citation list with document name, page/slide, and text snippet
-- Loading and error states
+- Natural language question input with RAG-powered cited answers
+
+**Meeting Intelligence:**
+- Audio file upload (Deepgram transcription) & raw transcript pasting
+- Executive summaries, action item extraction, and key decisions
+- Slack integration to post meeting briefs directly to channels
+
+**Design:**
+- Built using the "Obsidian Intelligence" design system (Dark mode, Glassmorphism, tailored typography).
 
 ## Documentation
 See `DOCUMENTATION_INDEX.md` for the full list of docs.

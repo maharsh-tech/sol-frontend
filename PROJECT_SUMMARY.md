@@ -1,7 +1,7 @@
 # Project Summary
 
 ## What is This?
-The frontend for CompanyOS Feature 1 — Knowledge Brain. A React SPA that connects to the Knowledge Brain backend API.
+The frontend for AskOrg AI. A React SPA that connects to the backend API, featuring **Feature 1: Knowledge Brain** and **Feature 2: Meeting Intelligence**.
 
 ## What it Does
 1. Users drag & drop or browse to upload documents
@@ -17,9 +17,7 @@ The frontend for CompanyOS Feature 1 — Knowledge Brain. A React SPA that conne
 - **State**: React useState hooks in App.jsx (no external state library)
 
 ## Key Design Decisions
-- **No routing** — single-page layout (upload + ask on one screen)
-- **Centralized API** — all fetch calls in `src/services/api.js`
-- **Configurable base URL** — via `VITE_API_BASE_URL` env var
-- **Dark theme** — indigo/purple palette for hackathon demo impact
-- **Tailwind v4** — using `@tailwindcss/vite` plugin, custom `@theme` tokens
-- **No external state** — simple enough for useState, no Redux/Zustand needed
+- **UI Architecture** — Two-tab single-page layout (Knowledge Brain & Meeting Intelligence).
+- **Design System** — "Obsidian Intelligence" visual language featuring premium glassmorphism, dynamic glowing orbs, and deep editorial styling.
+- **Centralized API** — Modular fetch calls in `services/api.js` and `services/meetingApi.js`.
+- **No external state** — Relying purely on React hooks (`useState`, `useRef`).

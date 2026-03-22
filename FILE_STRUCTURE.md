@@ -20,10 +20,13 @@ sol-frontend/
 │   │   ├── FileUpload.jsx      # Drag & drop upload with file list
 │   │   ├── QuestionBox.jsx     # Question input + Ask button
 │   │   ├── AnswerCard.jsx      # Answer display with confidence badge
-│   │   └── CitationList.jsx    # Source citations list
+│   │   ├── CitationList.jsx    # Source citations list
+│   │   ├── MeetingUpload.jsx   # Audio/Transcript upload for meetings
+│   │   └── MeetingResults.jsx  # AI summary, action items, and decisions
 │   │
 │   ├── services/
-│   │   └── api.js              # Centralized API calls (upload, ask, health)
+│   │   ├── api.js              # Knowledge Brain API calls
+│   │   └── meetingApi.js       # Meeting Intelligence API calls
 │   │
 │   └── assets/
 │       └── hero.png            # Hero image asset
