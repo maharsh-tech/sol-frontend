@@ -6,7 +6,7 @@ import AnswerCard from './components/AnswerCard';
 import CitationList from './components/CitationList';
 import MeetingUpload from './components/MeetingUpload';
 import MeetingResults from './components/MeetingResults';
-import { uploadDocuments, askQuestion } from './services/api';
+import { uploadDocuments, askQuestion, fetchPopularQuestions } from './services/api';
 import { analyzeMeeting, postMeetingToSlack } from './services/meetingApi';
 import RepoSensePage from './pages/RepoSensePage';
 import logoAsset from './assets/logo.jpeg';
@@ -20,6 +20,7 @@ export default function App() {
   const [isAsking, setIsAsking] = useState(false);
   const [answerData, setAnswerData] = useState(null);
   const [kbError, setKbError] = useState('');
+  const [popularQuestions, setPopularQuestions] = useState([]);
 
   // --- Meeting Intelligence state ---
   const [meetingData, setMeetingData] = useState(null);
@@ -51,6 +52,13 @@ export default function App() {
     window.addEventListener('askorg-extension-result', loadExtensionResult);
     return () => window.removeEventListener('askorg-extension-result', loadExtensionResult);
   }, []);
+
+  // --- Load popular questions ---
+  useEffect(() => {
+    fetchPopularQuestions().then(data => {
+      if (data && data.questions) setPopularQuestions(data.questions);
+    });
+  }, [answerData]);
 
   async function handleUpload(files) {
     setIsUploading(true);
@@ -210,6 +218,28 @@ export default function App() {
                   />
                 </section>
 
+                {/* Popular Questions */}
+                {popularQuestions.length > 0 && (
+                  <section>
+                    <h3 className="text-sm font-semibold text-text-secondary mb-3 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4 text-primary/70" /> Popular Questions
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {popularQuestions.map((item, i) => (
+                        <button
+                          key={i}
+                          id={`popular-q-${i}`}
+                          onClick={() => handleAsk(item.question)}
+                          className="text-xs px-4 py-2 rounded-full border border-border/40 bg-white/5 text-text-secondary hover:text-white hover:bg-primary/10 hover:border-primary/30 transition-all duration-200 backdrop-blur-sm"
+                          title={`Asked ${item.frequency} time${item.frequency > 1 ? 's' : ''}`}
+                        >
+                          {item.question.length > 60 ? item.question.slice(0, 60) + '…' : item.question}
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
                 {kbError && (
                   <div className="bg-error/10 border border-error/20 rounded-2xl p-5 text-error text-sm backdrop-blur-md">
                     ⚠ {kbError}
@@ -218,7 +248,7 @@ export default function App() {
 
                 {answerData && (
                   <section className="space-y-6 animate-[fadeIn_0.5s_ease-out] relative">
-                    <AnswerCard answer={answerData.answer} confidence={answerData.confidence} />
+                    <AnswerCard answer={answerData.answer} confidence={answerData.confidence} source={answerData.source} />
                     <CitationList citations={answerData.citations} />
                   </section>
                 )}

@@ -34,6 +34,16 @@ export async function healthCheck() {
   return response.json();
 }
 
+export async function fetchPopularQuestions() {
+  try {
+    const response = await fetch(`${BASE_URL}/faq/popular`);
+    if (!response.ok) return { questions: [] };
+    return response.json();
+  } catch {
+    return { questions: [] };
+  }
+}
+
 export async function analyzeRepo(repoUrl, token = "") {
   const response = await fetch(`${BASE_URL}/repo/analyze`, {
     method: "POST",
