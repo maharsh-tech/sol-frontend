@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Brain, Mic, MessageSquare } from 'lucide-react';
 import FileUpload from './components/FileUpload';
 import { PromptInputBox } from './components/ui/ai-prompt-box';
@@ -26,6 +26,30 @@ export default function App() {
   const [isPosting, setIsPosting] = useState(false);
   const [meetingError, setMeetingError] = useState('');
   const [slackSuccess, setSlackSuccess] = useState('');
+
+  // --- Load analysis results from Chrome extension (if any) ---
+  useEffect(() => {
+    function loadExtensionResult() {
+      const stored = localStorage.getItem('askorg_extension_result');
+      if (stored) {
+        try {
+          const result = JSON.parse(stored);
+          setMeetingData(result);
+          setActiveTab('meeting');
+        } catch (e) {
+          console.error('[AskOrg AI] Failed to parse extension result:', e);
+        }
+        localStorage.removeItem('askorg_extension_result');
+      }
+    }
+
+    // Check on mount (in case localStorage was set before React loaded)
+    loadExtensionResult();
+
+    // Also listen for the custom event dispatched by the extension
+    window.addEventListener('askorg-extension-result', loadExtensionResult);
+    return () => window.removeEventListener('askorg-extension-result', loadExtensionResult);
+  }, []);
 
   async function handleUpload(files) {
     setIsUploading(true);
