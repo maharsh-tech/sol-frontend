@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Brain, Mic, MessageSquare } from 'lucide-react';
+import { Brain, Mic, MessageSquare, GitBranch } from 'lucide-react';
 import FileUpload from './components/FileUpload';
 import { PromptInputBox } from './components/ui/ai-prompt-box';
 import AnswerCard from './components/AnswerCard';
@@ -8,10 +8,11 @@ import MeetingUpload from './components/MeetingUpload';
 import MeetingResults from './components/MeetingResults';
 import { uploadDocuments, askQuestion } from './services/api';
 import { analyzeMeeting, postMeetingToSlack } from './services/meetingApi';
+import RepoSensePage from './pages/RepoSensePage';
 import logoAsset from './assets/logo.jpeg';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('knowledge'); // 'knowledge' | 'meeting'
+  const [activeTab, setActiveTab] = useState('knowledge'); // 'knowledge' | 'meeting' | 'reposense'
 
   // --- Knowledge Brain state ---
   const [uploadResult, setUploadResult] = useState(null);
@@ -155,6 +156,17 @@ export default function App() {
             >
               <Mic className={`w-4 h-4 ${activeTab === 'meeting' ? 'text-accent' : ''}`} /> Meeting Intelligence
             </button>
+            <button
+              id="tab-reposense"
+              onClick={() => setActiveTab('reposense')}
+              className={`px-5 py-2 text-sm font-semibold rounded-lg transition-all duration-300 flex items-center gap-2 ${
+                activeTab === 'reposense'
+                  ? 'bg-gradient-to-r from-purple-500/20 to-purple-500/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] text-white'
+                  : 'text-text-secondary hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <GitBranch className={`w-4 h-4 ${activeTab === 'reposense' ? 'text-purple-400' : ''}`} /> RepoSense
+            </button>
           </div>
 
           <span className="text-sm font-medium text-text-secondary/70 hidden lg:block tracking-wide">
@@ -268,6 +280,9 @@ export default function App() {
             </div>
           </>
         )}
+
+        {/* ── REPOSENSE TAB ── */}
+        {activeTab === 'reposense' && <RepoSensePage />}
       </main>
     </div>
   );

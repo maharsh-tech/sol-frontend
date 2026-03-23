@@ -33,3 +33,29 @@ export async function healthCheck() {
   const response = await fetch(`${BASE_URL}/health`);
   return response.json();
 }
+
+export async function analyzeRepo(repoUrl, token = "") {
+  const response = await fetch(`${BASE_URL}/repo/analyze`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ repo_url: repoUrl, token }),
+  });
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: "Request failed" }));
+    throw new Error(error.detail || "Repository analysis failed");
+  }
+  return response.json();
+}
+
+export async function askRepoQuestion(question, repo) {
+  const response = await fetch(`${BASE_URL}/repo/ask`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question, repo }),
+  });
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: "Request failed" }));
+    throw new Error(error.detail || "Request failed");
+  }
+  return response.json();
+}
